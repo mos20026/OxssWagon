@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fale Conosco - Oxsswagon</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-sizing: border-box; /* Garante que o padding não quebre o layout */
+            font-size: 16px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Responsividade para telas muito pequenas */
+        @media (max-width: 480px) {
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Fale Conosco</h2>
+    
+    <form action="https://formsubmit.co/daniel@oxsswagon.com.br" method="POST">
+        
+        <input type="hidden" name="_subject" value="Novo Contato - Oxsswagon">
+        <input type="hidden" name="_template" value="table">
+        
+        <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" name="nome" required placeholder="Seu nome">
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de Documento</label>
+            <div class="radio-group">
+                <label><input type="radio" name="tipo" value="CPF" checked onclick="ajustarMascara('CPF')"> CPF</label>
+                <label><input type="radio" name="tipo" value="CNPJ" onclick="ajustarMascara('CNPJ')"> CNPJ</label>
+            </div>
+            <input type="text" id="documento" name="documento" required placeholder="000.000.000-00">
+        </div>
+
+        <div class="form-group">
+            <label for="razao_social">Razão Social (Opcional)</label>
+            <input type="text" id="razao_social" name="razao_social">
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required placeholder="exemplo@email.com">
+        </div>
+
+        <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone" required placeholder="(00) 0000-0000">
+        </div>
+
+        <div class="form-group">
+            <label for="whatsapp">WhatsApp</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000">
+        </div>
+
+        <button type="submit">Enviar Mensagem</button>
+    </form>
+</div>
+
+<script>
+    // Validação e Máscara Simples
+    const docInput = document.getElementById('documento');
+    
+    function ajustarMascara(tipo) {
+        docInput.placeholder = tipo === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00';
+        docInput.value = "";
+    }
+
+    docInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length <= 11) {
+            // Máscara CPF
+            value = value.replace(/(\md{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        } else {
+            // Máscara CNPJ
+            value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+        }
+        // Limita o tamanho para não quebrar
+        e.target.value = value.substring(0, 18);
+    });
+</script>
+
+</body>
+</html>
